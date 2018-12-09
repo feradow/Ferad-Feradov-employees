@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/test/ajax.js"></script>
+<script src="/test/browser.js"></script>
+</head>
+<body>
+    <script>
+        $(document).ready(function(){
+            getTxt = function (){
+ 
+                $.ajax({
+                    url:'http://localhost/test/database.txt',
+                    success: function (data){
+                        var perLine=data.split('\n');
+                        var employees=[];
+                        for(i=0;i<perLine.length;i++) {
+                            var line=perLine[i].split(', ');
+                            employees[i]={
+                                'EmpID':line[0],
+                                'ProjectID':line[1],
+                                'DateFrom':line[2],
+                                'DateTo':line[3]
+                            }
+                        }
+                      
+                        var bestColleague1, bestColleague2, bestProject;
+                        var bestTime = 0;
+
+                        for(var i = 0; i < employees.length - 1; i++) {
+
+                            var currentBestColleague1, currentBestColleague2, currentBestProject;
+                            var currentBestTime = 0;
+
+                            for(var j = i + 1; j < employees.length; j++) {
+
+                                if (employees[i].ProjectId != employees[j].ProjectId) {
+                                    continue;
+                                }
+                                var NULL = Date.now();
+                                var currentTime = ("намери дължината на общото време на работа на ", employees[i] , employees[j]);
+
+                                if (currentTime > currentBestTime) {
+                                    currentBestTime = currentTime;
+                                    currentBestColleague1 = employees[i].Id;
+                                    currentBestColleague2 = employees[j].Id;
+                                    currentBestProject = employees[i].ProjectId;
+                                }
+                            }
+
+                            if (currentBestTime > bestTime) {
+                                bestTime = currentBestTime;
+                                bestColleague1 = currentBestColleague1;
+                                bestColleague2 = currentBestColleague2;
+                                bestProject = currentBestProject;
+                            }
+                        }
+
+                        console.log(bestColleague1);
+                        console.log(bestColleague2);
+                        console.log(bestTime);
+                        console.log(bestProject);
+                    }
+                });
+                     
+            return 0;
+            }
+ 
+        });
+    </script>
+    <button type="button" id="btnGetTxt" onclick="getTxt()">Calculate</button>
+</body></html>
